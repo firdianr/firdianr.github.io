@@ -44,7 +44,7 @@
                     </label>
                     <div id="preview-container" class="w-full sm:w-1/2 mb-4 sm:mb-0">
                         @if ($lembaga->image)
-                            <img src="{{ asset('storage/' .  $lembaga->image ) }}" alt="">
+                            <img src="{{ asset($lembaga->image ) }}" alt="">
                         @endif
                     </div>
                 </div>
@@ -56,8 +56,9 @@
             </div>
 
             <div>
-                <label for="description" class="block mb-2 text-xl font-semibold text-gray-900 dark:text-white">description:</label>
-                <textarea id="description" name="description" required autocomplete="off" class="@error('description') is-invalid @enderror bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ old('description', $lembaga->description) }}</textarea>
+                <label for="description" class="block mb-2 text-xl font-semibold text-gray-900 dark:text-white">Deskripsi Lembaga :</label>
+                <input id="description" type="hidden" name="description" value="{{ old('description', $lembaga->description) }}">
+                <trix-editor class="trix-editor" input="description"></trix-editor>
                 @error('description')
                     <p id="helper-text-explanation" class="mt-2 text-sm text-red-600">
                         {{ $message }}

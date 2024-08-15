@@ -14,7 +14,7 @@
         <div class="flex flex-col items-center italic w-full md:w-auto">
           <img class="w-full max-w-xs md:max-w-lg" 
           @if ($dusun->image)
-          src="{{ asset('storage/' . $dusun->image ) }}"
+          src="{{ asset($dusun->image ) }}"
           @else
           src="{{ asset('img/lokasi/kaling.jpg') }}" 
           @endif
@@ -55,9 +55,9 @@
       </div>
     </div>
 
-    <p class="text-justify text-lg w-full">
-        {{ $dusun->latar_belakang }}
-    </p>
+    <div style="all: unset; font-family: inherit; margin-top: 16px; font-size:large;  text-align: justify;">
+      {!! $dusun->latar_belakang !!}
+    </div>
 
     <!-- Menampilkan posts yang terkait dengan dusun -->
     <div class="mt-8">

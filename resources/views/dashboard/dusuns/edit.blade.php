@@ -74,7 +74,7 @@
                     </label>
                     <div id="preview-container" class="w-full sm:w-1/2 mb-4 sm:mb-0">
                         @if ($dusun->image)
-                            <img src="{{ asset('storage/' .  $dusun->image ) }}" alt="">
+                            <img src="{{ asset($dusun->image ) }}" alt="">
                         @else
                             <img src="{{ asset('img/lokasi/kaling.jpg') }}" alt="">
                         @endif
@@ -98,12 +98,13 @@
             </div>
             
             <div>
-                <label for="latar_belakang" class="block mb-2 text-xl font-semibold text-gray-900 dark:text-white">Latar Belakang :</label>
-                <textarea id="latar_belakang" name="latar_belakang" class="@error('latar_belakang') is-invalid @enderror bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" rows="6">{{ old('latar_belakang', $dusun->latar_belakang) }}</textarea>
+                <label for="latar_belakang" class="block mb-2 text-xl font-semibold text-gray-900 dark:text-white">Latar Belakang Dusun :</label>
+                <input id="latar_belakang" type="hidden" name="latar_belakang" value="{{ old('latar_belakang', $dusun->latar_belakang) }}">
+                <trix-editor class="trix-editor" input="latar_belakang"></trix-editor>
                 @error('latar_belakang')
-                <p id="helper-text-explanation" class="mt-2 text-sm text-red-600">
-                    {{ $message }}
-                </p>
+                    <p id="helper-text-explanation" class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
                 @enderror
             </div>
             

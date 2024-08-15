@@ -24,7 +24,7 @@
                     <div>
                         <img class="w-full sm:w-64 rounded-lg sm:rounded-none sm:rounded-l-lg"
                         @if ($pegawai->image)
-                            src="{{ asset('storage/' . $pegawai->image ) }}"
+                            src="{{ asset($pegawai->image ) }}"
                         @else
                             src="{{ asset('img/logo/karanganyar.png') }}"
                         @endif

@@ -10,19 +10,19 @@
                 <div class="w-full sm:w-1/4">
                     <img class="w-full sm:w-64 rounded-lg sm:rounded-none sm:rounded-l-lg"
                     @if ($lembaga->image)
-                        src="{{ asset('storage/' . $lembaga->image ) }}"
+                        src="{{ asset($lembaga->image ) }}"
                     @else
                         src="{{ asset('img/logo/karanganyar.png') }}"
                     @endif
                         alt="Bonnie Avatar">
                 </div>
                 <div class="p-5 sm:ml-4 sm:w-3/4">
-                    <h3 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    <h3 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-8">
                         {{ $lembaga->name }}
                     </h3>
             
-                    <div class="mt-6 space-y-2 font-medium text-gray-500 dark:text-gray-400">
-                        {{ $lembaga->description }}
+                    <div style="all: unset; font-family: inherit; text-align: justify; font-size:large">
+                        {!! $lembaga->description !!}
                     </div>
                 </div>
             </div>

@@ -41,12 +41,15 @@ class DashboardPegawaiController extends Controller
             'image' => 'image|file',
         ]);
 
-        if($request->file('image')){
-            $validatedData['image'] = $request->file('image')->store('pegawai-image');
+        if ($request->file('image')) {
+            // Simpan gambar di folder public/pegawai-image
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('pegawai-image'), $imageName);
+            $validatedData['image'] = 'pegawai-image/' . $imageName;
         }
-    
+
         Pegawai::create($validatedData);
-    
+
         return redirect('/dashboard/pegawais')->with('success', 'Jabatan Baru berhasil ditambahkan');
     }
 
@@ -80,25 +83,29 @@ class DashboardPegawaiController extends Controller
             'image' => 'image|file',
         ];
 
-        // dd($request);
-
-        if($request->slug != $pegawai->slug){
+        if ($request->slug != $pegawai->slug) {
             $rules['slug'] = 'required|unique:pegawais';
         }
 
         $validatedData = $request->validate($rules);
 
-        if($request->file('image')){
-            if($request->oldImage){
-                Storage::delete($request->oldImage);
+        if ($request->file('image')) {
+            if ($pegawai->image) {
+                // Hapus gambar lama dari folder public
+                $oldImagePath = public_path($pegawai->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
-            $validatedData['image'] = $request->file('image')->store('pegawai-image');
+
+            // Simpan gambar baru di folder public/pegawai-image
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('pegawai-image'), $imageName);
+            $validatedData['image'] = 'pegawai-image/' . $imageName;
         }
 
-        // dd($validatedData);
-    
         Pegawai::where('id', $pegawai->id)->update($validatedData);
-    
+
         return redirect('/dashboard/pegawais')->with('success', 'Informasi jabatan berhasil diperbarui.');
     }
 
@@ -107,8 +114,12 @@ class DashboardPegawaiController extends Controller
      */
     public function destroy(Pegawai $pegawai)
     {
-        if($pegawai->image){
-            Storage::delete($pegawai->image);
+        if ($pegawai->image) {
+            // Hapus gambar dari folder public
+            $imagePath = public_path($pegawai->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
         Pegawai::destroy($pegawai->id);

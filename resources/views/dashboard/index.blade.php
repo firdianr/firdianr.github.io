@@ -23,10 +23,13 @@
   
         @endif
   
-        <h1 class="text-xl font-bold">Dashboard</h1>
-  
     </div>
     
-    <a href="https://sites.google.com/view/kkn178kaling?usp=sharing" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">UIN R.M. Said 178</a>
+    <section class="bg-white dark:bg-gray-900">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Selamat Datang !</h1>
+            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">{{ Auth::user()->email }}</p>
+        </div>
+    </section>
 
 </x-dashboard-layout>

@@ -37,7 +37,7 @@ class DashboardDusunController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|unique:dusuns',
-            'kadus'=> 'required',
+            'kadus' => 'required',
             'rw' => 'required',
             'rt' => 'required',
             'image' => 'image|file',
@@ -45,12 +45,15 @@ class DashboardDusunController extends Controller
             'latar_belakang' => 'nullable|string',
         ]);
 
-        if($request->file('image')){
-            $validatedData['image'] = $request->file('image')->store('dusun-image');
+        if ($request->file('image')) {
+            // Simpan gambar baru di folder public/dusun-image
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('dusun-image'), $imageName);
+            $validatedData['image'] = 'dusun-image/' . $imageName;
         }
-    
+
         Dusun::create($validatedData);
-    
+
         return redirect('/dashboard/dusuns')->with('success', 'Dusun berhasil ditambahkan');
     }
 
@@ -88,25 +91,29 @@ class DashboardDusunController extends Controller
             'latar_belakang' => 'nullable|string',
         ];
 
-        // dd($request);
-
-        if($request->slug != $dusun->slug){
+        if ($request->slug != $dusun->slug) {
             $rules['slug'] = 'required|unique:dusuns';
         }
 
         $validatedData = $request->validate($rules);
 
-        if($request->file('image')){
-            if($request->oldImage){
-                Storage::delete($request->oldImage);
+        if ($request->file('image')) {
+            if ($dusun->image) {
+                // Hapus gambar lama dari folder public jika ada
+                $oldImagePath = public_path($dusun->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
-            $validatedData['image'] = $request->file('image')->store('dusun-image');
+
+            // Simpan gambar baru di folder public/dusun-image
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('dusun-image'), $imageName);
+            $validatedData['image'] = 'dusun-image/' . $imageName;
         }
 
-        // dd($validatedData);
-    
-        Dusun::where('id', $dusun->id)->update($validatedData);
-    
+        $dusun->update($validatedData);
+
         return redirect('/dashboard/dusuns')->with('success', 'Data dusun berhasil diperbarui.');
     }
 
@@ -115,8 +122,12 @@ class DashboardDusunController extends Controller
      */
     public function destroy(Dusun $dusun)
     {
-        if($dusun->image){
-            Storage::delete($dusun->image);
+        if ($dusun->image) {
+            // Hapus gambar dari folder public jika ada
+            $imagePath = public_path($dusun->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
         Dusun::destroy($dusun->id);

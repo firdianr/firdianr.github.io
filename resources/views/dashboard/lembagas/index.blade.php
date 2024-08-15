@@ -46,7 +46,7 @@
                     <div>
                         <img class="w-full sm:w-64 rounded-lg sm:rounded-none sm:rounded-l-lg"
                         @if ($lembaga->image)
-                            src="{{ asset('storage/' . $lembaga->image ) }}"
+                            src="{{ asset($lembaga->image ) }}"
                         @else
                             src="{{ asset('img/logo/karanganyar.png') }}"
                         @endif
@@ -60,6 +60,9 @@
                         <div class="mt-6 space-y-2 font-medium text-gray-500 dark:text-gray-400 w-96">
                             <p>{{ Str::limit($lembaga->description, 150) }}</p>
                         </div>
+                        {{-- <div style="all: unset; font-family: inherit; text-align: justify; font-size:large; width:24rem">
+                            {!! Str::limit($lembaga->description, 150) !!}
+                        </div> --}}
 
                         {{-- Menampilkan Tombol --}}
                         <div class="inline-flex space-x-4 mt-8">

@@ -62,8 +62,11 @@ class DashboardPostController extends Controller
             'body' => 'required',
         ]);
 
-        if($request->file('image')){
-            $validatedData['image'] = $request->file('image')->store('post-image');
+        if ($request->file('image')) {
+            // Menyimpan file gambar di dalam folder public/post-image
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('post-image'), $imageName);
+            $validatedData['image'] = 'post-image/' . $imageName;
         }
 
         $validatedData['author_id'] = Auth::user()->id;
@@ -113,23 +116,29 @@ class DashboardPostController extends Controller
             'body' => 'required',
         ];
 
-
-        if($request->slug != $post->slug){
+        if ($request->slug != $post->slug) {
             $rules['slug'] = 'required|unique:posts';
         }
 
         $validatedData = $request->validate($rules);
 
-        if($request->file('image')){
-            if($request->oldImage){
-                Storage::delete($request->oldImage);
+        if ($request->file('image')) {
+            if ($post->image) {
+                // Hapus gambar lama dari folder public jika ada
+                $oldImagePath = public_path($post->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
-            $validatedData['image'] = $request->file('image')->store('post-image');
+            // Simpan gambar baru di folder public/post-image
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('post-image'), $imageName);
+            $validatedData['image'] = 'post-image/' . $imageName;
         }
 
-        Post::where('slug', $post->slug)->update($validatedData);
+        $post->update($validatedData);
 
-        return redirect('/dashboard/posts')->with('success', 'Berita Berhaasil Diubah');
+        return redirect('/dashboard/posts')->with('success', 'Berita Berhasil Diubah');
     }
 
     /**
@@ -137,8 +146,12 @@ class DashboardPostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if($post->image){
-            Storage::delete($post->image);
+        if ($post->image) {
+            // Hapus gambar dari folder public
+            $imagePath = public_path($post->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
         Post::destroy($post->id);

@@ -94,23 +94,37 @@ class DashboardDesaController extends Controller
             'lain_lain' => 'nullable|integer',
         ]);
 
-        if($request->file('image')){
-            if($request->oldImage){
-                Storage::delete($request->oldImage);
+        if ($request->file('image')) {
+            if ($desa->image) {
+                // Hapus gambar lama dari folder public jika ada
+                $oldImagePath = public_path($desa->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
-            $validatedData['image'] = $request->file('image')->store('desa-image');
+            // Simpan gambar baru di folder public/desa-image
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('desa-image'), $imageName);
+            $validatedData['image'] = 'desa-image/' . $imageName;
         }
 
-        if($request->file('map')){
-            if($request->oldMap){
-                Storage::delete($request->oldMap);
+        if ($request->file('map')) {
+            if ($desa->map) {
+                // Hapus peta lama dari folder public jika ada
+                $oldMapPath = public_path($desa->map);
+                if (file_exists($oldMapPath)) {
+                    unlink($oldMapPath);
+                }
             }
-            $validatedData['map'] = $request->file('map')->store('desa-image');
+            // Simpan peta baru di folder public/desa-image
+            $mapName = time() . '-' . $request->file('map')->getClientOriginalName();
+            $request->file('map')->move(public_path('desa-image'), $mapName);
+            $validatedData['map'] = 'desa-image/' . $mapName;
         }
-    
-        Desa::where('id', $desa->id)->update($validatedData);
-    
-        return redirect('/dashboard/desas')->with('success', 'Data desa berhasil diperbarui.');    
+
+        $desa->update($validatedData);
+
+        return redirect('/dashboard/desas')->with('success', 'Data desa berhasil diperbarui.');
     }
 
     /**

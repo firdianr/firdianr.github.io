@@ -43,7 +43,7 @@
             <div class="flex flex-col items-center italic w-full md:w-auto">
               <img class="w-full max-w-xs md:max-w-lg" 
               @if ($desa->image)
-              src="{{ asset('storage/' . $desa->image ) }}"
+              src="{{ asset($desa->image ) }}"
               @else
               src="{{ asset('img/lokasi/kaling.jpg') }}" 
               @endif
@@ -91,9 +91,9 @@
             </div>
           </div>
              
-          <p class="text-justify text-lg w-full">
-            {{ $desa->latar_belakang }}
-          </p>
+          <div style="all: unset; font-family: inherit; margin-top: 16px; font-size:large;  text-align: justify;">
+            {!! $desa->latar_belakang !!}
+          </div>
     
           <div class="w-full text-left">
             <h1 class="text-xl font-semibold mb-4">Pembagian Wilayah</h1>
@@ -141,7 +141,7 @@
             <div class="w-full md:w-1/2 flex flex-col items-center justify-start italic pt-8">
               <img class="w-full md:max-w-md" 
               @if ($desa->map)
-              src="{{ asset('storage/' . $desa->map ) }}"
+              src="{{ asset($desa->map ) }}"
               @else
               src="{{ asset('img/map/peta-kaling-mini.jpg') }}" 
               @endif

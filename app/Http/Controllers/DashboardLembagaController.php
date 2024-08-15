@@ -41,12 +41,15 @@ class DashboardLembagaController extends Controller
             'description' => 'required',
         ]);
 
-        if($request->file('image')){
-            $validatedData['image'] = $request->file('image')->store('lembaga-image');
+        if ($request->file('image')) {
+            // Simpan gambar di folder public/lembaga-image
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('lembaga-image'), $imageName);
+            $validatedData['image'] = 'lembaga-image/' . $imageName;
         }
-    
+
         Lembaga::create($validatedData);
-    
+
         return redirect('/dashboard/lembagas')->with('success', 'Lembaga Baru berhasil ditambahkan');
     }
 
@@ -80,25 +83,29 @@ class DashboardLembagaController extends Controller
             'description' => 'required',
         ];
 
-        // dd($request);
-
-        if($request->slug != $lembaga->slug){
+        if ($request->slug != $lembaga->slug) {
             $rules['slug'] = 'required|unique:lembagas';
         }
 
         $validatedData = $request->validate($rules);
 
-        if($request->file('image')){
-            if($request->oldImage){
-                Storage::delete($request->oldImage);
+        if ($request->file('image')) {
+            if ($lembaga->image) {
+                // Hapus gambar lama dari folder public
+                $oldImagePath = public_path($lembaga->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
-            $validatedData['image'] = $request->file('image')->store('lembaga-image');
+
+            // Simpan gambar baru di folder public/lembaga-image
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('lembaga-image'), $imageName);
+            $validatedData['image'] = 'lembaga-image/' . $imageName;
         }
 
-        // dd($validatedData);
-    
         Lembaga::where('id', $lembaga->id)->update($validatedData);
-    
+
         return redirect('/dashboard/lembagas')->with('success', 'Informasi Lembaga Desa berhasil diperbarui.');
     }
 
@@ -107,12 +114,17 @@ class DashboardLembagaController extends Controller
      */
     public function destroy(Lembaga $lembaga)
     {
-        if($lembaga->image){
-            Storage::delete($lembaga->image);
+        if ($lembaga->image) {
+            // Hapus gambar dari folder public
+            $imagePath = public_path($lembaga->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
         Lembaga::destroy($lembaga->id);
 
         return redirect('/dashboard/lembagas')->with('success', 'Informasi Lembaga Desa Telah Dihapus!');
     }
+
 }

@@ -54,7 +54,7 @@
                     </label>
                     <div id="preview-container" class="w-full sm:w-1/2 mb-4 sm:mb-0">
                         @if ($pegawai->image)
-                            <img src="{{ asset('storage/' .  $pegawai->image ) }}" alt="">
+                            <img src="{{ asset($pegawai->image ) }}" alt="">
                         @endif
                     </div>
                 </div>

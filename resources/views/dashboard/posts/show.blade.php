@@ -42,13 +42,15 @@
 
           @if ($post->image)
           <div class="flex flex-col w-full items-center justify-center space-y-0">
-            <img class="w-1/2 mt-2" src="{{ asset('storage/' . $post->image ) }}">
+            <img class="w-1/2 mt-2" src="{{ asset( $post->image ) }}">
             <p class="italic font-center font-serif">Gambar : {{ $post->image_description }}</p>
           </div>
           @endif
 
-          <p class="lead text-black">{{ $post->body }}
-          </p>
+          <div style="all: unset; font-family: inherit;">
+            {!! $post->body !!}
+          </div>
+
           <p class="text-md font-medium text-gray-600 dark:text-white italic">Editor : {{ $post->editor }}</p>
         </article>
     </div>

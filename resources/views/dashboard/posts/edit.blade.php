@@ -105,7 +105,7 @@
                     {{-- <img class="img-preview "> --}}
                     <div id="preview-container" class="w-full sm:w-1/2 mb-4 sm:mb-0">
                         @if ($post->image)
-                            <img src="{{ asset('storage/' .  $post->image ) }}" alt="">
+                            <img src="{{ asset($post->image ) }}" alt="">
                         @endif
                     </div>
                 </div>
@@ -126,18 +126,18 @@
                 @enderror
             </div>
 
-            {{-- <div>
+            <div>
                 <label for="body" class="block mb-2 text-xl font-semibold text-gray-900 dark:text-white">Isi Berita :</label>
-                <input id="body" type="hidden" name="body" value="{{ old('body') }}">
+                <input id="body" type="hidden" name="body" value="{{ old('body', $post->body) }}">
                 <trix-editor class="trix-editor" input="body"></trix-editor>
                 @error('body')
                     <p id="helper-text-explanation" class="mt-2 text-sm text-red-600">
                         {{ $message }}
                     </p>
                 @enderror
-            </div> --}}
+            </div>
 
-            <div>
+            {{-- <div>
                 <label for="body" class="block mb-2 text-xl font-semibold text-gray-900 dark:text-white">Isi Berita :</label>
                 <textarea id="body" name="body" class="@error('body') is-invalid @enderror bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" rows="6">{{ old('body', $post->body) }}</textarea>
                 @error('body')
@@ -145,7 +145,7 @@
                     {{ $message }}
                 </p>
                 @enderror
-            </div>
+            </div> --}}
 
             <div>
                 <button type="submit" class="px-2 py-3 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">                     

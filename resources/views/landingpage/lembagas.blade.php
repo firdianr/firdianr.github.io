@@ -23,7 +23,7 @@
               <div class="group text-center text-gray-500 dark:text-gray-400 p-5 shadow rounded-sm bg-gray-200 hover:bg-gray-300">
                 <img class="mx-auto mb-4 w-36 rounded-lg" 
                 @if ($lembaga->image)
-                    src="{{ asset('storage/' . $lembaga->image ) }}"
+                    src="{{ asset($lembaga->image ) }}"
                 @else
                     src="{{ asset('img/logo/karanganyar.png') }}"
                 @endif

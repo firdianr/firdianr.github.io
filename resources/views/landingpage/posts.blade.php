@@ -71,10 +71,12 @@
               <span class="text-sm">{{ $post->updated_at->format('d/m/Y') }} | {{ $post->updated_at->diffForHumans() }}</span>
 
               @if ($post->image)
-                  <img class="w-full h-48 object-cover object-center mt-2" src="{{ asset('storage/' . $post->image ) }}">
+                  <img class="w-full h-48 object-cover object-center mt-2" src="{{ asset($post->image ) }}">
               @endif
 
-              <p class="py-5 font-light text-gray-500 dark:text-gray-400">{{ Str::limit($post->body, 150) }}</p>
+              <div style="all: unset; font-family: inherit;">
+                {!! Str::limit($post->body, 150) !!}
+              </div>
 
               <div class="flex justify-end items-center">
                 <a href="/posts/{{ $post->slug }}" class="inline-flex items-center font-medium text-primary-600 dark:text-primary-500 hover:underline">
